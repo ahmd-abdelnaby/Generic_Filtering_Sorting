@@ -128,9 +128,13 @@ namespace Generic_Filtering_Sorting
         {
             return x.Date==y.Date;
         }
-        public static bool DateIsNot(this DateTime x, DateTime y)
+        public static bool DateIsNot(this DateTime x, DateTime y , int z = 0)
         {
             return x.Date != y.Date;
+        }
+        public static bool DateIsNot(this DateTime? x, DateTime y)
+        {
+            return x.Value.Date != y.Date;
         }
         public static bool DateIsBefore(this DateTime x, DateTime y)
         {

@@ -19,7 +19,8 @@ namespace Generic_Filtering_Sorting
             {typeof(int),0},
             {typeof(double),1},
             {typeof(string),2},
-            {typeof(DateTime),3}
+            {typeof(DateTime),3},
+            {typeof(Nullable<DateTime>),4}
         };
 
         public string field { get; }
@@ -81,6 +82,7 @@ namespace Generic_Filtering_Sorting
                         break;
                     }
                 case 3:
+                case 4:
                     {
                         DateTime? dt = string.IsNullOrEmpty(value) ? (DateTime?)null : DateTime.Parse(value);
                         valueExpr = Expression.Constant(dt);

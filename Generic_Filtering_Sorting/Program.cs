@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Generic_Filtering_Sorting.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,8 @@ namespace Generic_Filtering_Sorting
     {
         static void Main(string[] args)
         {
-
+            SCMQualityContext sCMQualityContext = new SCMQualityContext();
+            
             var students = new List<Student>() {
                 new Student(){ Id = 1, Name="Steve" ,DOB = DateTime.Parse("1998/12/12")},
                 new Student(){ Id = 11, Name="Abdul",DOB = DateTime.Parse("1998/10/12")},
@@ -21,25 +23,28 @@ namespace Generic_Filtering_Sorting
             };
 
             var sr = students.Select(s => s.Id = 12);
-            foreach (var item in sr)
+            
+            // Apply Sorting
+            var orderMerchantsById = OrderedList<Merchants>.ToOrderedList(sCMQualityContext.Merchants.AsQueryable(), "Id", OrderType.Ascending);
+            foreach (var merchant in orderMerchantsById)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(merchant.Id +" " + merchant.Name);
             }
 
-            var orderStudentsById = OrderedList<Student>.ToOrderedList(students.AsQueryable(), "Name", OrderType.Descending);
-            foreach (var student in orderStudentsById)
-            {
-                //Console.WriteLine(student.Id +" " + student.Name);
-            }
-
+            // Apply Filtering
+            // Swap between commneted and uncommneted filters
             var filter = new Dictionary<string, Filter>();
-            filter.Add("DOB", new Filter { Method = FilterMethods.DateIsNot , Value = "1998/12/12" });
-            filter.Add("Name", new Filter { Method = FilterMethods.Contains, Value = "Bill" });
-            filter.Add("Id", new Filter { Method = FilterMethods.Equal, Value = "7" });
-            var filteredStudentsByName = FilteredList<Student>.ToFilteredList(students.AsQueryable(), filter);
-            foreach (var student in filteredStudentsByName)
+
+            filter.Add("Created", new Filter { Method = FilterMethods.DateIs , Value = "2021/04/07" });
+
+            //filter.Add("Name", new Filter { Method = FilterMethods.Contains, Value = "حسن" });
+
+            //filter.Add("Id", new Filter { Method = FilterMethods.Equal, Value = "7" });
+
+            var filteredMerchantsyName = FilteredList<Merchants>.ToFilteredList(sCMQualityContext.Merchants.AsQueryable(), filter);
+            foreach (var merchant in filteredMerchantsyName)
             {
-                Console.WriteLine(student.Id + " " + student.Name);
+                //Console.WriteLine(merchant.Id + " " + merchant.Name);
             }
         }
     }
